@@ -1,5 +1,5 @@
 {
-  "name": "sr-tooltip",
+  "name": "@vladpischaeff/sr-tooltip",
   "version": "1.0.0",
   "description": "Lightweight tooltip for React and Next.js",
   "license": "MIT",
@@ -39,7 +39,7 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit"
   },
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/Vlad-Pischaeff/sr-tooltip.git"
   },
