@@ -9,8 +9,10 @@ import { TooltipStyles } from './styles.js';
 const HIDE_DELAY_MS = 300;
 
 interface TooltipProps {
-  children: React.ReactElement<React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>>; // Элемент, на который наводим (кнопка и т.д.)
-  content: React.ReactNode; // Что показать в тултипе
+  // Элемент, на который наводим (кнопка и т.д.)
+  children: React.ReactElement<React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>>;
+  // Что показать в тултипе
+  content: React.ReactNode;
   params?: {
     offset?: number;
     arrowSize?: number;

@@ -30,6 +30,7 @@ const styles = `
 
 const STYLE_ID = 'sr-tooltip-styles';
 
+// пока закомментируем, а там посмотрим...
 // export const TooltipStyles = () => {
 //   useEffect(() => {
 //     if (!document.getElementById(STYLE_ID)) {
