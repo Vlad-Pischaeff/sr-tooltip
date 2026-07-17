@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 const styles = `
   .sr-tooltip {
     --sr-arrow-size: 10px;
@@ -26,7 +26,7 @@ const styles = `
     height: fit-content;
   }
 `;
-// const STYLE_ID = 'sr-tooltip-styles';
+const STYLE_ID = 'sr-tooltip-styles';
 // export const TooltipStyles = () => {
 //   useEffect(() => {
 //     if (!document.getElementById(STYLE_ID)) {
@@ -38,15 +38,11 @@ const styles = `
 //   }, []);
 //   return null;
 // };
-const STYLE_ID = 'sr-tooltip-styles';
-// Код выполнится ОДИН раз при загрузке JS-бандла, до какого-либо рендеринга
 if (typeof window !== 'undefined' && !document.getElementById(STYLE_ID)) {
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = styles;
     document.head.appendChild(style);
 }
-// Компонент остается чистым или его можно вообще удалить, 
-// если импортировать файл напрямую
 export const TooltipStyles = () => null;
 //# sourceMappingURL=styles.js.map
