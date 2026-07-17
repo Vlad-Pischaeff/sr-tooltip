@@ -1,4 +1,4 @@
-# sr-tooltip
+# react-next-tooltip
 
 A lightweight tooltip component for **React** and **Next.js (12+)** with automatic portal creation and zero CSS imports.
 
@@ -99,7 +99,7 @@ const TooltipContent = ({ data }) => (
 ## Usage
 
 ```tsx
-import { Tooltip as SrTooltip } from 'sr-tooltip';
+import { Tooltip as SrTooltip } from 'react-next-tooltip';
 
 <SrTooltip
   params={{
