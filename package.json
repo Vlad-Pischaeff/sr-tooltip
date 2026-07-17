@@ -1,5 +1,5 @@
 {
-  "name": "@vladpischaeff/sr-tooltip",
+  "name": "simple-tooltip",
   "version": "1.0.0",
   "description": "Lightweight tooltip for React and Next.js",
   "license": "MIT",
