@@ -26,16 +26,27 @@ const styles = `
     height: fit-content;
   }
 `;
+// const STYLE_ID = 'sr-tooltip-styles';
+// export const TooltipStyles = () => {
+//   useEffect(() => {
+//     if (!document.getElementById(STYLE_ID)) {
+//       const style = document.createElement('style');
+//       style.id = STYLE_ID;
+//       style.textContent = styles;
+//       document.head.appendChild(style);
+//     }
+//   }, []);
+//   return null;
+// };
 const STYLE_ID = 'sr-tooltip-styles';
-export const TooltipStyles = () => {
-    useEffect(() => {
-        if (!document.getElementById(STYLE_ID)) {
-            const style = document.createElement('style');
-            style.id = STYLE_ID;
-            style.textContent = styles;
-            document.head.appendChild(style);
-        }
-    }, []);
-    return null;
-};
+// Код выполнится ОДИН раз при загрузке JS-бандла, до какого-либо рендеринга
+if (typeof window !== 'undefined' && !document.getElementById(STYLE_ID)) {
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = styles;
+    document.head.appendChild(style);
+}
+// Компонент остается чистым или его можно вообще удалить, 
+// если импортировать файл напрямую
+export const TooltipStyles = () => null;
 //# sourceMappingURL=styles.js.map

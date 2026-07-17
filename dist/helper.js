@@ -5,7 +5,7 @@ export function getTooltipCoordsDynamic(anchor, tooltip, offset, location) {
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
     const arrow = { x: 'center', y: 'top' };
-    // Горизонталь (центрирование)
+    // 1. Горизонталь (центрирование)
     let x = anchorRect.left + scrollX + anchorRect.width / 2 - tooltipRect.width / 2;
     // Ограничение по правому краю
     if (x + tooltipRect.width + padding > window.innerWidth + scrollX) {
@@ -17,18 +17,7 @@ export function getTooltipCoordsDynamic(anchor, tooltip, offset, location) {
         x = scrollX + padding;
         arrow.x = 'left';
     }
-    // Вертикаль
-    // let y = anchorRect.bottom + scrollY + offset;
-    // const spaceBelow = window.innerHeight - anchorRect.bottom;
-    // const spaceAbove = anchorRect.top;
-    // console.log('..1.', anchorRect.top, scrollY, tooltipRect.height)
-    // // Если снизу места меньше, чем высота тултипа, и сверху места больше, чем снизу
-    // if (spaceBelow < tooltipRect.height + offset && spaceAbove > spaceBelow) {
-    //   y = anchorRect.top + scrollY - tooltipRect.height - offset;
-    //   arrow.y = 'bottom';
-    // }
-    // return { x, y, arrow };
-    // 2. Вертикальный расчет с учетом свободного места
+    // 2. Вертикаль с учетом свободного места
     const spaceBelow = window.innerHeight - anchorRect.bottom;
     const spaceAbove = anchorRect.top;
     const neededHeight = tooltipRect.height + offset;

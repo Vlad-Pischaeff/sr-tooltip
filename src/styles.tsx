@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 const styles = `
   .sr-tooltip {
@@ -30,15 +30,24 @@ const styles = `
 
 const STYLE_ID = 'sr-tooltip-styles';
 
-export const TooltipStyles = () => {
-  useEffect(() => {
-    if (!document.getElementById(STYLE_ID)) {
-      const style = document.createElement('style');
-      style.id = STYLE_ID;
-      style.textContent = styles;
-      document.head.appendChild(style);
-    }
-  }, []);
+// export const TooltipStyles = () => {
+//   useEffect(() => {
+//     if (!document.getElementById(STYLE_ID)) {
+//       const style = document.createElement('style');
+//       style.id = STYLE_ID;
+//       style.textContent = styles;
+//       document.head.appendChild(style);
+//     }
+//   }, []);
 
-  return null;
-};
+//   return null;
+// };
+
+if (typeof window !== 'undefined' && !document.getElementById(STYLE_ID)) {
+  const style = document.createElement('style');
+  style.id = STYLE_ID;
+  style.textContent = styles;
+  document.head.appendChild(style);
+}
+
+export const TooltipStyles = () => null;
