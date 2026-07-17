@@ -1,7 +1,6 @@
-export function getTooltipCoordsDynamic(anchor, tooltip) {
+export function getTooltipCoordsDynamic(anchor, tooltip, offset) {
     const anchorRect = anchor.getBoundingClientRect();
     const tooltipRect = tooltip.getBoundingClientRect();
-    const gap = 8;
     const padding = 16; // Отступ от краев экрана
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
@@ -10,7 +9,7 @@ export function getTooltipCoordsDynamic(anchor, tooltip) {
     let x = anchorRect.left + scrollX + anchorRect.width / 2 - tooltipRect.width / 2;
     // Ограничение по правому краю
     if (x + tooltipRect.width + padding > window.innerWidth + scrollX) {
-        x = window.innerWidth + scrollX - tooltipRect.width - padding;
+        x = window.innerWidth + scrollX - tooltipRect.width - padding * 2;
         arrow.x = 'right';
     }
     // Ограничение по левому краю
@@ -19,12 +18,12 @@ export function getTooltipCoordsDynamic(anchor, tooltip) {
         arrow.x = 'left';
     }
     // Вертикаль
-    let y = anchorRect.bottom + scrollY + gap;
+    let y = anchorRect.bottom + scrollY + offset;
     const spaceBelow = window.innerHeight - anchorRect.bottom;
     const spaceAbove = anchorRect.top;
     // Если снизу места меньше, чем высота тултипа, и сверху места больше, чем снизу
-    if (spaceBelow < tooltipRect.height + gap && spaceAbove > spaceBelow) {
-        y = anchorRect.top + scrollY - tooltipRect.height - gap;
+    if (spaceBelow < tooltipRect.height + offset && spaceAbove > spaceBelow) {
+        y = anchorRect.top + scrollY - tooltipRect.height - offset;
         arrow.y = 'bottom';
     }
     return { x, y, arrow };

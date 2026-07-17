@@ -11,14 +11,22 @@ const HIDE_DELAY_MS = 300;
 interface TooltipProps {
   children: React.ReactElement<React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>>; // Элемент, на который наводим (кнопка и т.д.)
   content: React.ReactNode; // Что показать в тултипе
-  isDisabled?: boolean;
-  hasArrow?: boolean;
+  params?: {
+    offset?: number;
+    arrowSize?: number;
+    arrowColor?: string;
+    placement?: 'top' | 'bottom';
+    delay?: number;
+  },
 }
 
-export const Tooltip = ({ children, content, isDisabled, hasArrow = false }: TooltipProps) => {
+const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+
+export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
+  const { offset = 12, arrowSize = 0, arrowColor = 'transparent', placement = 'top' } = params;
   const [isShown, setIsShown] = useState(false);
   const [portal, setPortal] = useState<HTMLElement | null>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
+  const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: placement } });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const anchorRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -31,9 +39,9 @@ export const Tooltip = ({ children, content, isDisabled, hasArrow = false }: Too
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEff(() => {
     if (isShown && anchorRef.current && tooltipRef.current) {
-      const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current);
+      const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current, offset);
       setCoords(coords);
     }
   }, [isShown, content]);
@@ -69,16 +77,19 @@ export const Tooltip = ({ children, content, isDisabled, hasArrow = false }: Too
         createPortal(
           <div
             ref={tooltipRef}
-            className={`sr-tooltip ${hasArrow ? `sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}` : ''}`}
+            className='sr-tooltip'
             onMouseEnter={cancelHide}
             onMouseLeave={hideWithDelay}
             style={{
               left: coords.x,
               top: coords.y,
               visibility: coords.x === 0 ? 'hidden' : 'visible',
-            }}
+              '--sr-arrow-size': `${arrowSize}px`,
+              '--sr-arrow-color': arrowColor,
+            } as React.CSSProperties}
           >
             {content}
+            {arrowSize !== 0 && <div className={`sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}`} />}
           </div>,
           portal,
         )}
