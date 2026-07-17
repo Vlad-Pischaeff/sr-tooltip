@@ -8,10 +8,10 @@ import { TooltipStyles } from './styles.js';
 const HIDE_DELAY_MS = 300;
 const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 export const Tooltip = ({ children, content, params = {} }) => {
-    const { offset = 12, arrowSize = 0, arrowColor = 'transparent', placement = 'top' } = params;
+    const { offset = 12, arrowSize = 0, arrowColor = 'transparent', location = 'bottom' } = params;
     const [isShown, setIsShown] = useState(false);
     const [portal, setPortal] = useState(null);
-    const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: placement } });
+    const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
     const timerRef = useRef(null);
     const anchorRef = useRef(null);
     const tooltipRef = useRef(null);
@@ -25,7 +25,7 @@ export const Tooltip = ({ children, content, params = {} }) => {
     }, []);
     useEff(() => {
         if (isShown && anchorRef.current && tooltipRef.current) {
-            const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current, offset);
+            const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current, offset, location);
             setCoords(coords);
         }
     }, [isShown, content]);

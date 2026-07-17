@@ -6,7 +6,7 @@ interface TooltipProps {
         offset?: number;
         arrowSize?: number;
         arrowColor?: string;
-        placement?: 'top' | 'bottom';
+        location?: 'top' | 'bottom';
         delay?: number;
     };
 }

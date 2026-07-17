@@ -15,7 +15,7 @@ interface TooltipProps {
     offset?: number;
     arrowSize?: number;
     arrowColor?: string;
-    placement?: 'top' | 'bottom';
+    location?: 'top' | 'bottom';
     delay?: number;
   },
 }
@@ -23,10 +23,10 @@ interface TooltipProps {
 const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
-  const { offset = 12, arrowSize = 0, arrowColor = 'transparent', placement = 'top' } = params;
+  const { offset = 12, arrowSize = 0, arrowColor = 'transparent', location = 'bottom' } = params;
   const [isShown, setIsShown] = useState(false);
   const [portal, setPortal] = useState<HTMLElement | null>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: placement } });
+  const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const anchorRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -41,7 +41,7 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
 
   useEff(() => {
     if (isShown && anchorRef.current && tooltipRef.current) {
-      const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current, offset);
+      const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current, offset, location);
       setCoords(coords);
     }
   }, [isShown, content]);
