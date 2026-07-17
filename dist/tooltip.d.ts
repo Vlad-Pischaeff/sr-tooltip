@@ -12,4 +12,3 @@ interface TooltipProps {
 }
 export declare const Tooltip: ({ children, content, params }: TooltipProps) => React.JSX.Element;
 export {};
-//# sourceMappingURL=tooltip.d.ts.map

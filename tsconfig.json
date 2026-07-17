@@ -1,39 +1,26 @@
 {
   "compilerOptions": {
-    /* Основные настройки */
     "target": "ESNext",
-    //"module": "ESNext",
     "module": "NodeNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",
-    
-    /* JSX */
+
     "jsx": "react-jsx",
-    
-    /* Strict Mode */
+
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    
-    /* Импорты и модули */
+
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true, // Важно: игнорирует ошибки в node_modules
-    "isolatedModules": true, // Требование esbuild/tsup
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true,
-    
-    /* Пути (опционально) */
-    "ignoreDeprecations": "5.0",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]

@@ -8,4 +8,3 @@ export declare function getTooltipCoordsDynamic(anchor: HTMLElement, tooltip: HT
     arrow: ArrowPosition;
 };
 export {};
-//# sourceMappingURL=helper.d.ts.map

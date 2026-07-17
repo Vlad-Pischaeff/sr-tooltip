@@ -52,4 +52,3 @@ export const Tooltip = ({ children, content, params = {} }) => {
                         '--sr-arrow-color': arrowColor,
                     }, children: [content, arrowSize !== 0 && _jsx("div", { className: `sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}` })] }), portal)] }));
 };
-//# sourceMappingURL=tooltip.js.map

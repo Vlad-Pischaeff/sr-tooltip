@@ -45,4 +45,3 @@ if (typeof window !== 'undefined' && !document.getElementById(STYLE_ID)) {
     document.head.appendChild(style);
 }
 export const TooltipStyles = () => null;
-//# sourceMappingURL=styles.js.map

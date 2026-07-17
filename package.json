@@ -1,8 +1,12 @@
 {
   "name": "sr-tooltip",
   "version": "1.0.0",
+  "description": "Lightweight tooltip for React and Next.js",
+  "license": "MIT",
+  "author": "Vlad Pischaeff",
   "type": "module",
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -14,6 +18,14 @@
     "dist",
     "README.md"
   ],
+  "keywords": [
+    "react",
+    "tooltip",
+    "nextjs",
+    "react-tooltip",
+    "ui"
+  ],
+  "sideEffects": false,
   "peerDependencies": {
     "react": ">=16.8.0 <20.0.0",
     "react-dom": ">=16.8.0 <20.0.0"
@@ -26,5 +38,16 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit"
+  },
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/Vlad-Pischaeff/sr-tooltip.git"
+  },
+  "homepage": "https://github.com/Vlad-Pischaeff/sr-tooltip#readme",
+  "bugs": {
+    "url": "https://github.com/Vlad-Pischaeff/sr-tooltip/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

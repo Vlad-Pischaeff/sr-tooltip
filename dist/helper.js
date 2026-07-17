@@ -47,4 +47,3 @@ export function getTooltipCoordsDynamic(anchor, tooltip, offset, location) {
     }
     return { x, y, arrow };
 }
-//# sourceMappingURL=helper.js.map
