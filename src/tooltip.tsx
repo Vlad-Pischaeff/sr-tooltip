@@ -9,17 +9,15 @@ import { TooltipStyles } from './styles.js';
 const HIDE_DELAY_MS = 300;
 
 interface TooltipProps {
-  // Элемент, на который наводим (кнопка и т.д.)
   children: React.ReactElement<
     React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
-  >;
-  // Что показать в тултипе
-  content: React.ReactNode;
+  >; // Элемент, на который наводим (кнопка и т.д.)
+  content: React.ReactNode; // Что показать в тултипе
   params?: {
     offset?: number;
     arrowSize?: number;
     location?: "top" | "bottom";
-    delay?: number;
+    delay?: number; // пока оставим на будущее...
   };
 }
 
@@ -81,6 +79,7 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
   const hideWithDelay = () => {
     timerRef.current = setTimeout(() => {
       setIsShown(false);
+      setCoords({ x: 0, y: 0, arrow: { x: "center", y: "top" } }); // Сброс координат
     }, HIDE_DELAY_MS);
   };
 
@@ -112,12 +111,21 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
             onMouseEnter={cancelHide}
             onMouseLeave={hideWithDelay}
             style={
-              {
-                left: coords.x,
-                top: coords.y,
-                visibility: coords.x === 0 ? "hidden" : "visible",
-                "--sr-arrow-size": `${arrowSize}px`,
-              } as React.CSSProperties
+              coords.x === 0
+                ? {
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    opacity: 0,
+                    pointerEvents: "none",
+                    maxWidth: "300px",
+                  }
+                : ({
+                    left: coords.x,
+                    top: coords.y,
+                    opacity: 1,
+                    "--sr-arrow-size": `${arrowSize}px`,
+                  } as React.CSSProperties)
             }
           >
             <div ref={contentRef} style={{ display: "contents" }}>

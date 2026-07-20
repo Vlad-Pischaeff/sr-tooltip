@@ -54,6 +54,7 @@ export const Tooltip = ({ children, content, params = {} }) => {
     const hideWithDelay = () => {
         timerRef.current = setTimeout(() => {
             setIsShown(false);
+            setCoords({ x: 0, y: 0, arrow: { x: "center", y: "top" } }); // Сброс координат
         }, HIDE_DELAY_MS);
     };
     // Функция отмены закрытия
@@ -65,10 +66,19 @@ export const Tooltip = ({ children, content, params = {} }) => {
         setIsShown(true);
     };
     return (_jsxs(_Fragment, { children: [_jsx(TooltipStyles, {}), _jsx("div", { ref: anchorRef, className: "sr-wrapper", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, children: children }), showPortal &&
-                createPortal(_jsxs("div", { ref: tooltipRef, className: "sr-tooltip", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, style: {
-                        left: coords.x,
-                        top: coords.y,
-                        visibility: coords.x === 0 ? "hidden" : "visible",
-                        "--sr-arrow-size": `${arrowSize}px`,
-                    }, children: [_jsx("div", { ref: contentRef, style: { display: "contents" }, children: content }), arrowSize !== 0 && (_jsx("div", { ref: arrowRef, className: `sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}` }))] }), portal)] }));
+                createPortal(_jsxs("div", { ref: tooltipRef, className: "sr-tooltip", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, style: coords.x === 0
+                        ? {
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            opacity: 0,
+                            pointerEvents: "none",
+                            maxWidth: "300px",
+                        }
+                        : {
+                            left: coords.x,
+                            top: coords.y,
+                            opacity: 1,
+                            "--sr-arrow-size": `${arrowSize}px`,
+                        }, children: [_jsx("div", { ref: contentRef, style: { display: "contents" }, children: content }), arrowSize !== 0 && (_jsx("div", { ref: arrowRef, className: `sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}` }))] }), portal)] }));
 };

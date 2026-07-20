@@ -4,33 +4,35 @@ type ArrowPosition = {
 }
 
 export function getTooltipCoordsDynamic(
-  anchor: HTMLElement, 
-  tooltip: HTMLElement, 
-  offset: number, 
-  location: 'top' | 'bottom'
+  anchor: HTMLElement,
+  tooltip: HTMLElement,
+  offset: number,
+  location: "top" | "bottom",
 ) {
   const anchorRect = anchor.getBoundingClientRect();
   const tooltipRect = tooltip.getBoundingClientRect();
+  const viewWidth = document.documentElement.clientWidth;
   const padding = 16; // Отступ от краев экрана
-  
+
   const scrollX = window.scrollX;
   const scrollY = window.scrollY;
 
-  const arrow: ArrowPosition  = { x: 'center', y: 'top' };
+  const arrow: ArrowPosition = { x: "center", y: "top" };
 
   // 1. Горизонталь (центрирование)
-  let x = anchorRect.left + scrollX + anchorRect.width / 2 - tooltipRect.width / 2;
+  let x =
+    anchorRect.left + scrollX + anchorRect.width / 2 - tooltipRect.width / 2;
 
   // Ограничение по правому краю
-  if (x + tooltipRect.width + padding > window.innerWidth + scrollX) {
-    x = window.innerWidth + scrollX - tooltipRect.width - padding * 2;
-    arrow.x = 'right';
+  if (x + tooltipRect.width + padding > viewWidth + scrollX) {
+    x = viewWidth + scrollX - tooltipRect.width - padding;
+    arrow.x = "right";
   }
 
   // Ограничение по левому краю
   if (x < scrollX + padding) {
     x = scrollX + padding;
-    arrow.x = 'left';
+    arrow.x = "left";
   }
 
   // 2. Вертикаль с учетом свободного места
@@ -41,26 +43,26 @@ export function getTooltipCoordsDynamic(
   // Определяем желаемую позицию на основе параметра placement
   let finalLocation = location;
 
-  if (location === 'top') {
+  if (location === "top") {
     // Если хотим сверху, но там нет места, а снизу места БОЛЬШЕ — переворачиваем вниз
     if (spaceAbove < neededHeight && spaceBelow > spaceAbove) {
-      finalLocation = 'bottom';
+      finalLocation = "bottom";
     }
   } else {
     // Если хотим снизу (default), но там нет места, а сверху места БОЛЬШЕ — переворачиваем вверх
     if (spaceBelow < neededHeight && spaceAbove > spaceBelow) {
-      finalLocation = 'top';
+      finalLocation = "top";
     }
   }
 
   // Расчет финальных координат 'y' и направления стрелки
   let y = 0;
-  if (finalLocation === 'top') {
+  if (finalLocation === "top") {
     y = anchorRect.top + scrollY - neededHeight;
-    arrow.y = 'bottom'; // Стрелка тултипа смотрит вниз, на элемент
+    arrow.y = "bottom"; // Стрелка тултипа смотрит вниз, на элемент
   } else {
     y = anchorRect.bottom + scrollY + offset;
-    arrow.y = 'top';    // Стрелка тултипа смотрит вверх, на элемент
+    arrow.y = "top"; // Стрелка тултипа смотрит вверх, на элемент
   }
 
   return { x, y, arrow };
