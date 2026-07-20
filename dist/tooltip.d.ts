@@ -5,8 +5,7 @@ interface TooltipProps {
     params?: {
         offset?: number;
         arrowSize?: number;
-        arrowColor?: string;
-        location?: 'top' | 'bottom';
+        location?: "top" | "bottom";
         delay?: number;
     };
 }

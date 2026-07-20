@@ -12,7 +12,6 @@ const styles = `
     position: absolute;
     width: var(--sr-arrow-size);
     height: var(--sr-arrow-size);
-    background: var(--sr-arrow-color);
     transform: rotate(45deg);
   }
   .sr-arrow-left { left: 15%; }
@@ -27,6 +26,7 @@ const styles = `
   }
 `;
 const STYLE_ID = 'sr-tooltip-styles';
+// пока закомментируем, а там посмотрим...
 // export const TooltipStyles = () => {
 //   useEffect(() => {
 //     if (!document.getElementById(STYLE_ID)) {

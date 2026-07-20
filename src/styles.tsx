@@ -13,7 +13,6 @@ const styles = `
     position: absolute;
     width: var(--sr-arrow-size);
     height: var(--sr-arrow-size);
-    background: var(--sr-arrow-color);
     transform: rotate(45deg);
   }
   .sr-arrow-left { left: 15%; }

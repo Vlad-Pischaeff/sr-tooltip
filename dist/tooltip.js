@@ -8,13 +8,15 @@ import { TooltipStyles } from './styles.js';
 const HIDE_DELAY_MS = 300;
 const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 export const Tooltip = ({ children, content, params = {} }) => {
-    const { offset = 12, arrowSize = 0, arrowColor = 'transparent', location = 'bottom' } = params;
+    const { offset = 12, arrowSize = 0, location = "bottom" } = params;
     const [isShown, setIsShown] = useState(false);
     const [portal, setPortal] = useState(null);
     const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
     const timerRef = useRef(null);
     const anchorRef = useRef(null);
     const tooltipRef = useRef(null);
+    const contentRef = useRef(null);
+    const arrowRef = useRef(null);
     const showPortal = isShown && portal !== null;
     useEffect(() => {
         setPortal(getOrCreateTooltipContainer());
@@ -29,6 +31,25 @@ export const Tooltip = ({ children, content, params = {} }) => {
             setCoords(coords);
         }
     }, [isShown, content]);
+    useEff(() => {
+        if (showPortal &&
+            tooltipRef.current &&
+            contentRef.current &&
+            arrowRef.current) {
+            let bgColor = window.getComputedStyle(contentRef.current).backgroundColor;
+            if (bgColor === "transparent" || bgColor === "rgba(0, 0, 0, 0)") {
+                const firstChild = contentRef.current.firstElementChild;
+                if (firstChild) {
+                    bgColor = window.getComputedStyle(firstChild).backgroundColor;
+                }
+            }
+            if (bgColor &&
+                bgColor !== "transparent" &&
+                bgColor !== "rgba(0, 0, 0, 0)") {
+                arrowRef.current.style.backgroundColor = bgColor;
+            }
+        }
+    }, [showPortal, content]);
     // Функция закрытия с задержкой
     const hideWithDelay = () => {
         timerRef.current = setTimeout(() => {
@@ -43,12 +64,11 @@ export const Tooltip = ({ children, content, params = {} }) => {
         }
         setIsShown(true);
     };
-    return (_jsxs(_Fragment, { children: [_jsx(TooltipStyles, {}), _jsx("div", { ref: anchorRef, className: 'sr-wrapper', onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, children: children }), showPortal &&
-                createPortal(_jsxs("div", { ref: tooltipRef, className: 'sr-tooltip', onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, style: {
+    return (_jsxs(_Fragment, { children: [_jsx(TooltipStyles, {}), _jsx("div", { ref: anchorRef, className: "sr-wrapper", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, children: children }), showPortal &&
+                createPortal(_jsxs("div", { ref: tooltipRef, className: "sr-tooltip", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, style: {
                         left: coords.x,
                         top: coords.y,
-                        visibility: coords.x === 0 ? 'hidden' : 'visible',
-                        '--sr-arrow-size': `${arrowSize}px`,
-                        '--sr-arrow-color': arrowColor,
-                    }, children: [content, arrowSize !== 0 && _jsx("div", { className: `sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}` })] }), portal)] }));
+                        visibility: coords.x === 0 ? "hidden" : "visible",
+                        "--sr-arrow-size": `${arrowSize}px`,
+                    }, children: [_jsx("div", { ref: contentRef, style: { display: "contents" }, children: content }), arrowSize !== 0 && (_jsx("div", { ref: arrowRef, className: `sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}` }))] }), portal)] }));
 };

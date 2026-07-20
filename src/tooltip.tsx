@@ -10,28 +10,31 @@ const HIDE_DELAY_MS = 300;
 
 interface TooltipProps {
   // Элемент, на который наводим (кнопка и т.д.)
-  children: React.ReactElement<React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>>;
+  children: React.ReactElement<
+    React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
+  >;
   // Что показать в тултипе
   content: React.ReactNode;
   params?: {
     offset?: number;
     arrowSize?: number;
-    arrowColor?: string;
-    location?: 'top' | 'bottom';
+    location?: "top" | "bottom";
     delay?: number;
-  },
+  };
 }
 
 const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
-  const { offset = 12, arrowSize = 0, arrowColor = 'transparent', location = 'bottom' } = params;
+  const { offset = 12, arrowSize = 0, location = "bottom" } = params;
   const [isShown, setIsShown] = useState(false);
   const [portal, setPortal] = useState<HTMLElement | null>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const anchorRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const arrowRef = useRef<HTMLDivElement | null>(null);
   const showPortal = isShown && portal !== null;
 
   useEffect(() => {
@@ -47,6 +50,32 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
       setCoords(coords);
     }
   }, [isShown, content]);
+
+  useEff(() => {
+    if (
+      showPortal &&
+      tooltipRef.current &&
+      contentRef.current &&
+      arrowRef.current
+    ) {
+      let bgColor = window.getComputedStyle(contentRef.current).backgroundColor;
+
+      if (bgColor === "transparent" || bgColor === "rgba(0, 0, 0, 0)") {
+        const firstChild = contentRef.current.firstElementChild as HTMLElement;
+        if (firstChild) {
+          bgColor = window.getComputedStyle(firstChild).backgroundColor;
+        }
+      }
+
+      if (
+        bgColor &&
+        bgColor !== "transparent" &&
+        bgColor !== "rgba(0, 0, 0, 0)"
+      ) {
+        arrowRef.current.style.backgroundColor = bgColor;
+      }
+    }
+  }, [showPortal, content]);
 
   // Функция закрытия с задержкой
   const hideWithDelay = () => {
@@ -67,9 +96,9 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
   return (
     <>
       <TooltipStyles />
-      <div 
+      <div
         ref={anchorRef}
-        className='sr-wrapper'
+        className="sr-wrapper"
         onMouseEnter={cancelHide}
         onMouseLeave={hideWithDelay}
       >
@@ -79,19 +108,27 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
         createPortal(
           <div
             ref={tooltipRef}
-            className='sr-tooltip'
+            className="sr-tooltip"
             onMouseEnter={cancelHide}
             onMouseLeave={hideWithDelay}
-            style={{
-              left: coords.x,
-              top: coords.y,
-              visibility: coords.x === 0 ? 'hidden' : 'visible',
-              '--sr-arrow-size': `${arrowSize}px`,
-              '--sr-arrow-color': arrowColor,
-            } as React.CSSProperties}
+            style={
+              {
+                left: coords.x,
+                top: coords.y,
+                visibility: coords.x === 0 ? "hidden" : "visible",
+                "--sr-arrow-size": `${arrowSize}px`,
+              } as React.CSSProperties
+            }
           >
-            {content}
-            {arrowSize !== 0 && <div className={`sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}`} />}
+            <div ref={contentRef} style={{ display: "contents" }}>
+              {content}
+            </div>
+            {arrowSize !== 0 && (
+              <div
+                ref={arrowRef}
+                className={`sr-arrow sr-arrow-${coords.arrow.x} sr-arrow-${coords.arrow.y}`}
+              />
+            )}
           </div>,
           portal,
         )}

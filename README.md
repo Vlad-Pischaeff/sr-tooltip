@@ -1,4 +1,5 @@
-# react-next-tooltip
+# Simple React Tooltip
+## react-next-tooltip
 
 A lightweight tooltip component for **React** and **Next.js (12+)** with automatic portal creation and zero CSS imports.
 
@@ -48,19 +49,9 @@ are completely controlled by your own component.
 
 This makes the tooltip easy to integrate into any design system without overriding built-in styles.
 
-### Arrow color
+### Arrow
 
-One current limitation is that the arrow color must be specified separately:
-
-```tsx
-params={{
-  arrowColor: '#f1f3fa'
-}}
-```
-
-The arrow color should match your tooltip background.
-
-Although this requires one additional property, the advantage is that **you don't need to create or position the arrow yourself**—the library handles its rendering and positioning automatically.
+The advantage is that **you don't need to create or position the arrow yourself**—the library handles its rendering and positioning automatically.
 
 ---
 
@@ -99,20 +90,19 @@ const TooltipContent = ({ data }) => (
 ## Usage
 
 ```tsx
-import { Tooltip as SrTooltip } from 'react-next-tooltip';
+import { Tooltip } from 'react-next-tooltip';
 
-<SrTooltip
+<Tooltip
   params={{
     offset: 8,
     arrowSize: 10,
-    arrowColor: '#f1f3fa',
   }}
   content={<TooltipContent data={data} />}
 >
   <div className={styles.tag}>
     {some_data}
   </div>
-</SrTooltip>
+</Tooltip>
 ```
 
 ---
@@ -125,7 +115,6 @@ import { Tooltip as SrTooltip } from 'react-next-tooltip';
 | `content` | `ReactNode` | Tooltip content |
 | `params.offset` | `number` | Distance between target and tooltip |
 | `params.arrowSize` | `number` | Arrow size in pixels (`0` disables arrow) |
-| `params.arrowColor` | `string` | Arrow color |
 | `params.location` | `'top' \| 'bottom'` | Tooltip position |
 | `params.delay` | `number` | *(Reserved for future use)* |
 
