@@ -39,7 +39,7 @@ export function getTooltipCoordsDynamic(anchor, tooltip, offset, location) {
     // Расчет финальных координат 'y' и направления стрелки
     let y = 0;
     if (finalLocation === "top") {
-        y = anchorRect.top + scrollY - neededHeight;
+        y = anchorRect.top + scrollY - neededHeight - offset;
         arrow.y = "bottom"; // Стрелка тултипа смотрит вниз, на элемент
     }
     else {
