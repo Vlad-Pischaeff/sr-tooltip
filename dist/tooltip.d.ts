@@ -6,7 +6,7 @@ interface TooltipProps {
         offset?: number;
         arrowSize?: number;
         location?: "top" | "bottom";
-        delay?: number;
+        delay?: string;
     };
 }
 export declare const Tooltip: ({ children, content, params }: TooltipProps) => React.JSX.Element;
