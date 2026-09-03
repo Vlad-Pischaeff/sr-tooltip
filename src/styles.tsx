@@ -4,7 +4,7 @@ const styles = `
   .sr-tooltip {
     --sr-arrow-size: 10px;
     position: absolute;
-    transition: opacity 0.5s;
+    transition: opacity var(--sr-delay, 0.3s);
     pointer-events: auto !important;
     width: fit-content;
     height: fit-content;
@@ -28,20 +28,6 @@ const styles = `
 `;
 
 const STYLE_ID = 'sr-tooltip-styles';
-
-// пока закомментируем, а там посмотрим...
-// export const TooltipStyles = () => {
-//   useEffect(() => {
-//     if (!document.getElementById(STYLE_ID)) {
-//       const style = document.createElement('style');
-//       style.id = STYLE_ID;
-//       style.textContent = styles;
-//       document.head.appendChild(style);
-//     }
-//   }, []);
-
-//   return null;
-// };
 
 if (typeof window !== 'undefined' && !document.getElementById(STYLE_ID)) {
   const style = document.createElement('style');

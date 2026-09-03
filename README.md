@@ -96,6 +96,7 @@ import { Tooltip } from 'react-next-tooltip';
   params={{
     offset: 8,
     arrowSize: 10,
+    delay: '0.2s'
   }}
   content={<TooltipContent data={data} />}
 >
@@ -116,7 +117,7 @@ import { Tooltip } from 'react-next-tooltip';
 | `params.offset` | `number` | Distance between target and tooltip |
 | `params.arrowSize` | `number` | Arrow size in pixels (`0` disables arrow) |
 | `params.location` | `'top' \| 'bottom'` | Tooltip position |
-| `params.delay` | `number` | *(Reserved for future use)* |
+| `params.delay` | `string` | Tooltip appearance delay (CSS transition value) |
 
 ---
 
@@ -137,6 +138,4 @@ import { Tooltip } from 'react-next-tooltip';
 Potential future enhancements include:
 
 - Left / right positioning
-- Automatic arrow color detection
 - Better collision detection near viewport edges
-- Animation customization

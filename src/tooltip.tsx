@@ -6,7 +6,7 @@ import { getTooltipCoordsDynamic } from './helper.js';
 import { getOrCreateTooltipContainer } from './tooltip-provider.js';
 import { TooltipStyles } from './styles.js';
 
-const HIDE_DELAY_MS = 300;
+const HIDE_DELAY_MS = 250;
 
 interface TooltipProps {
   children: React.ReactElement<
@@ -17,14 +17,19 @@ interface TooltipProps {
     offset?: number;
     arrowSize?: number;
     location?: "top" | "bottom";
-    delay?: number; // пока оставим на будущее...
+    delay?: string;
   };
 }
 
 const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
-  const { offset = 12, arrowSize = 0, location = "bottom" } = params;
+  const {
+    offset = 12,
+    arrowSize = 0,
+    location = "bottom",
+    delay = "0.3s",
+  } = params;
   const [isShown, setIsShown] = useState(false);
   const [portal, setPortal] = useState<HTMLElement | null>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
@@ -119,13 +124,15 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
                     opacity: 0,
                     pointerEvents: "none",
                     maxWidth: "300px",
+                    ["--sr-delay" as string]: delay,
                   }
-                : ({
+                : {
                     left: coords.x,
                     top: coords.y,
                     opacity: 1,
-                    "--sr-arrow-size": `${arrowSize}px`,
-                  } as React.CSSProperties)
+                    ["--sr-arrow-size" as string]: `${arrowSize}px`,
+                    ["--sr-delay" as string]: delay,
+                  }
             }
           >
             <div ref={contentRef} style={{ display: "contents" }}>
