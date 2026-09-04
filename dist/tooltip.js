@@ -1,17 +1,21 @@
 'use client';
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { cloneElement, useEffect, useLayoutEffect, useRef, useState, } from "react";
 import { createPortal } from 'react-dom';
 import { getTooltipCoordsDynamic } from './helper.js';
 import { getOrCreateTooltipContainer } from './tooltip-provider.js';
 import { TooltipStyles } from './styles.js';
-const HIDE_DELAY_MS = 250;
+const HIDE_DELAY_MS = 350;
 const useEff = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 export const Tooltip = ({ children, content, params = {} }) => {
     const { offset = 12, arrowSize = 0, location = "bottom", delay = "0.3s", } = params;
     const [isShown, setIsShown] = useState(false);
     const [portal, setPortal] = useState(null);
-    const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
+    const [coords, setCoords] = useState({
+        x: 0,
+        y: 0,
+        arrow: { x: "center", y: "top" },
+    });
     const timerRef = useRef(null);
     const anchorRef = useRef(null);
     const tooltipRef = useRef(null);
@@ -65,7 +69,30 @@ export const Tooltip = ({ children, content, params = {} }) => {
         }
         setIsShown(true);
     };
-    return (_jsxs(_Fragment, { children: [_jsx(TooltipStyles, {}), _jsx("div", { ref: anchorRef, className: "sr-wrapper", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, children: children }), showPortal &&
+    // Склеиваем ref дочернего элемента с нашим anchorRef
+    const handleRef = (node) => {
+        anchorRef.current = node;
+        // Поддержка существующего ref в children
+        const childRef = children.ref;
+        if (typeof childRef === "function") {
+            childRef(node);
+        }
+        else if (childRef && typeof childRef === "object") {
+            childRef.current = node;
+        }
+    };
+    const trigger = cloneElement(children, {
+        ref: handleRef,
+        onMouseEnter: (e) => {
+            cancelHide();
+            children.props.onMouseEnter?.(e);
+        },
+        onMouseLeave: (e) => {
+            hideWithDelay();
+            children.props.onMouseLeave?.(e);
+        },
+    });
+    return (_jsxs(_Fragment, { children: [_jsx(TooltipStyles, {}), trigger, showPortal &&
                 createPortal(_jsxs("div", { ref: tooltipRef, className: "sr-tooltip", onMouseEnter: cancelHide, onMouseLeave: hideWithDelay, style: coords.x === 0
                         ? {
                             position: "fixed",

@@ -19,7 +19,6 @@ const styles = `
   .sr-arrow-center { left: calc(50% - var(--sr-arrow-size) / 2); }
   .sr-arrow-top { bottom: calc(100% - var(--sr-arrow-size) / 2); }
   .sr-arrow-bottom { bottom: calc(-1 * var(--sr-arrow-size) / 2); }
-  .sr-wrapper { display: inline-flex; }
 `;
 const STYLE_ID = 'sr-tooltip-styles';
 if (typeof window !== 'undefined' && !document.getElementById(STYLE_ID)) {

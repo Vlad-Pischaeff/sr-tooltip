@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 interface TooltipProps {
     children: React.ReactElement<React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>>;
     content: React.ReactNode;

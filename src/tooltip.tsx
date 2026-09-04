@@ -1,12 +1,18 @@
 'use client'
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  cloneElement,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from 'react-dom';
 import { getTooltipCoordsDynamic } from './helper.js';
 import { getOrCreateTooltipContainer } from './tooltip-provider.js';
 import { TooltipStyles } from './styles.js';
 
-const HIDE_DELAY_MS = 250;
+const HIDE_DELAY_MS = 350;
 
 interface TooltipProps {
   children: React.ReactElement<
@@ -32,9 +38,13 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
   } = params;
   const [isShown, setIsShown] = useState(false);
   const [portal, setPortal] = useState<HTMLElement | null>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0, arrow: { x: 'center', y: 'top' } });
+  const [coords, setCoords] = useState({
+    x: 0,
+    y: 0,
+    arrow: { x: "center", y: "top" },
+  });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const anchorRef = useRef<HTMLDivElement | null>(null);
+  const anchorRef = useRef<HTMLElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
@@ -49,7 +59,12 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
 
   useEff(() => {
     if (isShown && anchorRef.current && tooltipRef.current) {
-      const coords = getTooltipCoordsDynamic(anchorRef.current, tooltipRef.current, offset, location);
+      const coords = getTooltipCoordsDynamic(
+        anchorRef.current,
+        tooltipRef.current,
+        offset,
+        location,
+      );
       setCoords(coords);
     }
   }, [isShown, content]);
@@ -97,17 +112,35 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
     setIsShown(true);
   };
 
+  // Склеиваем ref дочернего элемента с нашим anchorRef
+  const handleRef = (node: HTMLElement | null) => {
+    anchorRef.current = node;
+
+    // Поддержка существующего ref в children
+    const childRef = (children as any).ref;
+    if (typeof childRef === "function") {
+      childRef(node);
+    } else if (childRef && typeof childRef === "object") {
+      childRef.current = node;
+    }
+  };
+
+  const trigger = cloneElement(children, {
+    ref: handleRef,
+    onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
+      cancelHide();
+      children.props.onMouseEnter?.(e);
+    },
+    onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
+      hideWithDelay();
+      children.props.onMouseLeave?.(e);
+    },
+  });
+
   return (
     <>
       <TooltipStyles />
-      <div
-        ref={anchorRef}
-        className="sr-wrapper"
-        onMouseEnter={cancelHide}
-        onMouseLeave={hideWithDelay}
-      >
-        {children}
-      </div>
+      {trigger}
       {showPortal &&
         createPortal(
           <div
@@ -149,4 +182,4 @@ export const Tooltip = ({ children, content, params = {} }: TooltipProps) => {
         )}
     </>
   );
-}; 
+};
